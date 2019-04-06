@@ -1,6 +1,7 @@
 package br.unisul.web.sexta.services;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import br.unisul.web.sexta.domain.Cidade;
 import br.unisul.web.sexta.domain.Cliente;
 import br.unisul.web.sexta.domain.Endereco;
 import br.unisul.web.sexta.domain.Estado;
+import br.unisul.web.sexta.domain.ItemPedido;
+import br.unisul.web.sexta.domain.Pedido;
 import br.unisul.web.sexta.domain.Produto;
 import br.unisul.web.sexta.domain.enums.TipoCliente;
 import br.unisul.web.sexta.repositories.CategoriaRepository;
@@ -18,6 +21,8 @@ import br.unisul.web.sexta.repositories.CidadeRepository;
 import br.unisul.web.sexta.repositories.ClienteRepository;
 import br.unisul.web.sexta.repositories.EnderecoRepository;
 import br.unisul.web.sexta.repositories.EstadoRepository;
+import br.unisul.web.sexta.repositories.ItemPedidoRepository;
+import br.unisul.web.sexta.repositories.PedidoRepository;
 import br.unisul.web.sexta.repositories.ProdutoRepository;
 
 @Service
@@ -41,7 +46,15 @@ public class DbService {
 	@Autowired
 	private EnderecoRepository endRep;
 
+	@Autowired
+	private PedidoRepository pedRep;
+
+	@Autowired
+	private ItemPedidoRepository IpedRep;
+
 	public void inicializaBancoDeDados() throws ParseException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2 = new Categoria(null, "Escritório");
@@ -66,8 +79,7 @@ public class DbService {
 		e2.getCidades().addAll(Arrays.asList(c2, c3, c4));
 		e3.getCidades().addAll(Arrays.asList(c5, c6));
 
-		Cliente cli1 = new Cliente(null, "Lucas", "teste@gmail.com", "80234690968",
-				TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Lucas", "teste@gmail.com", "80234690968", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("48999999999", "100000000"));
 
 		Endereco en1 = new Endereco(null, "Almir Santos Miranda ", "929", "Apto 402", "Dehon", "88704110", cli1, c2);
@@ -91,6 +103,24 @@ public class DbService {
 
 		catRep.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
 		prodRep.saveAll(Arrays.asList(p1, p2, p3));
+
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, en1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, en2);
+
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		pedRep.saveAll(Arrays.asList(ped1, ped2));
+
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		IpedRep.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }

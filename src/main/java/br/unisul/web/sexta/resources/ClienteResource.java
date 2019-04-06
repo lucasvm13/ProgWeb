@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import br.unisul.web.sexta.config.dtos.ClienteDto;
 import br.unisul.web.sexta.config.dtos.ClienteInsertDto;
 import br.unisul.web.sexta.domain.Cliente;
@@ -63,6 +62,12 @@ public class ClienteResource {
 			listDto.add(new ClienteDto(c));
 		}
 		return ResponseEntity.ok().body(listDto);
+	}
+
+	@RequestMapping(value = "/{email}/email", method = RequestMethod.GET)
+	public ResponseEntity<Cliente> find(@PathVariable(value = "value") String email) {
+		Cliente obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
 	}
 
 }

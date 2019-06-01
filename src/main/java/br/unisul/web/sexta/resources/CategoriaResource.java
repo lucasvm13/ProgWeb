@@ -3,16 +3,16 @@ package br.unisul.web.sexta.resources;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import br.unisul.web.sexta.config.dtos.CategoriaDto;
 import br.unisul.web.sexta.domain.Categoria;
 import br.unisul.web.sexta.services.CategoriaService;
@@ -66,4 +66,34 @@ public class CategoriaResource {
 			
 			return ResponseEntity.ok().body(listDto);
 		}
+	// LISTAR TODAS
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDto>> findAll() {
+		List<Categoria> lista = service.findAll();
+
+		List<CategoriaDto> listDto = new ArrayList<CategoriaDto>();
+
+		for (Categoria c : lista) {
+			listDto.add(new CategoriaDto(c));
+		}
+
+		return ResponseEntity.ok().body(listDto);
+	}
+
+	// LISTAR POR NOME
+
+	@RequestMapping(value = "/filtro/{nome}", method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDto>> get(@PathVariable String nome) {
+
+		List<Categoria> lista = service.listarPorNome(nome);
+
+		List<CategoriaDto> listDto = new ArrayList<CategoriaDto>();
+
+		for (Categoria c : lista) {
+			listDto.add(new CategoriaDto(c));
+		}
+
+		return ResponseEntity.ok().body(listDto);
+	}
+
 }

@@ -56,6 +56,8 @@ public class DbService {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
+	public void inicializaBancoDeDados() throws ParseException {
+
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2 = new Categoria(null, "Escritório");
 		Categoria cat3 = new Categoria(null, "Cama mesa e banho");
@@ -80,6 +82,8 @@ public class DbService {
 		e3.getCidades().addAll(Arrays.asList(c5, c6));
 
 		Cliente cli1 = new Cliente(null, "Lucas", "teste@gmail.com", "80234690968", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Lucas", "teste@gmail.com", "80234690968",
+				TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("48999999999", "100000000"));
 
 		Endereco en1 = new Endereco(null, "Almir Santos Miranda ", "929", "Apto 402", "Dehon", "88704110", cli1, c2);

@@ -27,6 +27,11 @@ public class CategoriaService {
 		return rep.save(obj);
 	}
 
+	// BUSCA POR NOME
+	public List<Categoria> listarPorNome(String nome) {
+		return rep.findByNomeContaining(nome);
+	}
+
 	// ATUALIZAR
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
@@ -43,4 +48,5 @@ public class CategoriaService {
 	public List<Categoria> findAll() {
 		return rep.findAll();
 	}
+
 }

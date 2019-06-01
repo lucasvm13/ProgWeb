@@ -55,6 +55,7 @@ public class CategoriaResource {
 	//LISTAR TODAS
 		@RequestMapping(method=RequestMethod.GET)
 		public ResponseEntity<List<CategoriaDto>> findAll() {
+			
 			List<Categoria> lista = service.findAll();
 			
 			List<CategoriaDto> listDto = new ArrayList<CategoriaDto>();
